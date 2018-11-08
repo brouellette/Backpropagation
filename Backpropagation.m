@@ -3,8 +3,6 @@ function [] = Backpropagation()
     
     % Read more about what this network needs to do, then fill in the
     % pieces here
-    
-    
-    disp("Start this network by passing in some inputs!")
+        
 end
 

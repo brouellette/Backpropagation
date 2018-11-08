@@ -1,8 +1,11 @@
-% Introduce the data file from MNIST
-x = 0:pi/100:2*pi;
-y = sin(x);
+% Read in the data file from MNIST
+images = loadMNISTImages('train-images.idx3-ubyte');
+labels = loadMNISTLabels('train-labels.idx1-ubyte');
+ 
+% Display the data to understand it
+disp(images(:,1:10)); % Show the first ten images
+disp(labels(1:10)); % Show the first 10 labels
 
-plot(x,y)
 
 % Break into subgroups of around 12 elements?
 
