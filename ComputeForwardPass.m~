@@ -1,0 +1,8 @@
+function [a] = ComputeForwardPass(p, W, b)
+    % Compute net input n
+    n = (W * p') + b;
+    
+    % Apply transfer function to n
+    a = LogSigmoid(n);
+end
+

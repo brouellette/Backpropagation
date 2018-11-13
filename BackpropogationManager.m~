@@ -8,12 +8,10 @@ testLabels = loadMNISTLabels('t10k-labels.idx1-ubyte'); % 10,000 labels
 % Break training images into columns. Consider making batches here later
 column1 = rawTrainingImages(:, 1);
 
-% Set initial values for weightMatrix and biases
+% Set initi
 weightMatrix = zeros(size(column1, 1), 1);
 biases = zeros(size(column1, 1), 1);
-biases(1, 1) = 1;
 
-% Send data to algorithm
 BackpropagationAlgorithm(column1, weightMatrix, biases)
 
 % Handle the results
