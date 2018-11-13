@@ -1,4 +1,4 @@
-function [] = BackpropagationAlgorithm(input, weightMatrix, biases)
+function [] = BackpropagationAlgorithm(input, weightMatrix, biases, expectedOutput)
     % Compute the forward pass through the network
     a = ComputeForwardPass(input, weightMatrix, biases);
     

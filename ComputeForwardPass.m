@@ -4,5 +4,7 @@ function [a] = ComputeForwardPass(p, W, b)
     
     % Apply transfer function to n
     a = LogSigmoid(n);
+    
+    % 
 end
 

@@ -2,8 +2,9 @@
 rawTrainingImages = loadMNISTImages("train-images.idx3-ubyte");
 rawTrainingLabels = loadMNISTLabels("train-labels.idx1-ubyte"); % 60,000 labels
 
-rawTestImages = loadMNISTImages("t10k-images.idx3-ubyte");
-rawTestLabels = loadMNISTLabels("t10k-labels.idx1-ubyte"); % 10,000 labels
+% Don't use these until testing time comes
+%rawTestImages = loadMNISTImages("t10k-images.idx3-ubyte");
+%rawTestLabels = loadMNISTLabels("t10k-labels.idx1-ubyte"); % 10,000 labels
 
 % Network Properties
 numberOfLayers = 4;                                 % Network structure: R-16-16-9
@@ -14,7 +15,7 @@ layer4NeuronCount = 10;                             % For the outputs 0-9
 costFunctionSize  = layer4NeuronCount;              % The values of each cost function for each output
 
 % The values of each cost function for each output: C = (a^L - y)^2
-costFunction;                                       
+costFunction = zeros(costFunctionSize, 1);                                       
 
 % Initialize the weight matricies and biases for each layer
 % TODO: Generalize this into a for-loop here using the number of layers and
@@ -32,8 +33,9 @@ layer4Biases = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
 % Break training images into columns. Consider making batches here later
 inputRound1 = rawTrainingImages(:, 1);
 
-% Send data to algorithm
-BackpropagationAlgorithm(inputRound1, layer1WeightMatrix, layer1Biases)
+% Send data to algorithm. Algorithm should return a cost function for the
+% label that was passed in
+BackpropagationAlgorithm(inputRound1, layer1WeightMatrix, layer1Biases, rawTrainingLabels(1))
 
 % Handle the results
 
