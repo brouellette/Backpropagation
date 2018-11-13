@@ -1,20 +1,39 @@
 % Read in the data file from MNIST
-rawTrainingImages = loadMNISTImages('train-images.idx3-ubyte');
-trainingLabels = loadMNISTLabels('train-labels.idx1-ubyte'); % 60,000 labels
+rawTrainingImages = loadMNISTImages("train-images.idx3-ubyte");
+rawTrainingLabels = loadMNISTLabels("train-labels.idx1-ubyte"); % 60,000 labels
 
-rawTestImages = loadMNISTImages('t10k-images.idx3-ubyte');
-testLabels = loadMNISTLabels('t10k-labels.idx1-ubyte'); % 10,000 labels
+rawTestImages = loadMNISTImages("t10k-images.idx3-ubyte");
+rawTestLabels = loadMNISTLabels("t10k-labels.idx1-ubyte"); % 10,000 labels
+
+% Network Properties
+numberOfLayers = 4;                                 % Network structure: R-16-16-9
+layer1NeuronCount = size(rawTrainingImages, 1);     % Input layer
+layer2NeuronCount = 16;                             % Hidden layer for computation
+layer3NeuronCount = 16;                             % Hidden layer for computation
+layer4NeuronCount = 10;                             % For the outputs 0-9
+costFunctionSize  = layer4NeuronCount;              % The values of each cost function for each output
+
+% The values of each cost function for each output: C = (a^L - y)^2
+costFunction;                                       
+
+% Initialize the weight matricies and biases for each layer
+% TODO: Generalize this into a for-loop here using the number of layers and
+% a string representation of the index for the range 1:numberOfLayers
+% "layer" + i + "NeuronCount"
+layer1WeightMatrix = PopulateVectorRandomly(zeros(layer1NeuronCount, 1));
+layer1Biases = PopulateVectorRandomly(zeros(layer1NeuronCount, 1));
+layer2WeightMatrix = PopulateVectorRandomly(zeros(layer2NeuronCount, 1));
+layer2Biases = PopulateVectorRandomly(zeros(layer2NeuronCount, 1));
+layer3WeightMatrix = PopulateVectorRandomly(zeros(layer3NeuronCount, 1));
+layer3Biases = PopulateVectorRandomly(zeros(layer3NeuronCount, 1));
+layer4WeightMatrix = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
+layer4Biases = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
 
 % Break training images into columns. Consider making batches here later
-column1 = rawTrainingImages(:, 1);
-
-% Set initial values for weightMatrix and biases
-weightMatrix = zeros(size(column1, 1), 1);
-biases = zeros(size(column1, 1), 1);
-biases(1, 1) = 1;
+inputRound1 = rawTrainingImages(:, 1);
 
 % Send data to algorithm
-BackpropagationAlgorithm(column1, weightMatrix, biases)
+BackpropagationAlgorithm(inputRound1, layer1WeightMatrix, layer1Biases)
 
 % Handle the results
 
