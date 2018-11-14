@@ -46,7 +46,8 @@ labelVector = LabelToVector(rawTrainingLabels(1), zeros(layer4NeuronCount, 1));
 
 disp(labelVector);
 
-C1 = ComputeCostFunction();
+% This is the final cost function of the first input
+C1 = ComputeCostFunction(A3, labelVector);
 
 % By using the third layer's activations compute the mean squared error, or
 % the cost function: ()
