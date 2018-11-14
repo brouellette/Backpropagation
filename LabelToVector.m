@@ -15,10 +15,6 @@ function [output] = LabelToVector(target, costFunction)
             costFunction(i) = 1;
         end
     end
-%     
-%     if target == 0
-%        costFunction(1) = 1; 
-%     end
     
     output = costFunction;
 end

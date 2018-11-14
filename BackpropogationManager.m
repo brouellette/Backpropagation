@@ -1,4 +1,4 @@
-% Read in the data file from MNIST
+% Read in the data file from WNIST
 rawTrainingImages = loadMNISTImages("train-images.idx3-ubyte");
 rawTrainingLabels = loadMNISTLabels("train-labels.idx1-ubyte"); % 60,000 labels
 
@@ -7,7 +7,7 @@ rawTrainingLabels = loadMNISTLabels("train-labels.idx1-ubyte"); % 60,000 labels
 %rawTestLabels = loadMNISTLabels("t10k-labels.idx1-ubyte"); % 10,000 labels
 
 % Network Properties
-numberOfLayers = 4;                                 % Network structure: R-16-16-9
+numberOfLayers = 4;                                 % Network structure: R-16-16-10
 layer1NeuronCount = size(rawTrainingImages, 1);     % Input layer
 layer2NeuronCount = layer1NeuronCount / 49;         % Hidden layer for computation
 layer3NeuronCount = layer1NeuronCount / 49;         % Hidden layer for computation
@@ -30,31 +30,28 @@ B3 = PopulateVectorRandomly(zeros(layer3NeuronCount, 1));
 W3 = PopulateVectorRandomly(zeros(layer3NeuronCount*layer4NeuronCount, 1));
 B4 = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
 
-% Break training images into columns. Consider making batches here later
-inputRound1 = rawTrainingImages(:, 1);
+% Break training images into batches
+batchSize = (size(rawTrainingImages, 2))/600;              % 100
+numberOfBatches = (size(rawTrainingImages, 2))/batchSize;  % 600
+costs = zeros(batchSize, numberOfBatches);                 % 100x600 = 60,000
+for i = 1:numberOfBatches
+    for j = 1:batchSize
+        offset = j+((batchSize*i) - batchSize);            
+        input = rawTrainingImages(:, offset);
 
-% Compute the neuron activations for all three layers
-A1 = BackpropagationAlgorithm(inputRound1, W1, B2);
-A2 = BackpropagationAlgorithm(A1, W2, B3);
-A3 = BackpropagationAlgorithm(A2, W3, B4);
+        A1 = BackpropagationAlgorithm(input, W1, B2);
+        A2 = BackpropagationAlgorithm(A1, W2, B3);
+        A3 = BackpropagationAlgorithm(A2, W3, B4);
 
-disp(A3);
+        labelVector = LabelToVector(rawTrainingLabels(j), zeros(layer4NeuronCount, 1));
 
-% Compute the cost of a single training example
-% Transform the label to be in a vector format. This is 0 based
-labelVector = LabelToVector(rawTrainingLabels(1), zeros(layer4NeuronCount, 1));
+        C = ComputeCost(A3, labelVector);
 
-disp(labelVector);
-
-C1 = ComputeCostFunction(A3, labelVector);
+        costs(j, i) = C;
+    end
+end
 
 uh = [];
-
-% By using the third layer's activations compute the mean squared error, or
-% the cost function: ()
-
-% Handle the results
-
 
 % Create graphical representations of the inputs and outputs
 
