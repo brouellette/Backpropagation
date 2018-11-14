@@ -36,7 +36,8 @@ numberOfBatches = (size(rawTrainingImages, 2))/batchSize;  % 600
 costs = zeros(batchSize, numberOfBatches);                 % 100x600 = 60,000
 for i = 1:numberOfBatches
     for j = 1:batchSize
-        input = rawTrainingImages(:, j);
+        offset = j+((batchSize*i) - batchSize);            
+        input = rawTrainingImages(:, offset);
 
         A1 = BackpropagationAlgorithm(input, W1, B2);
         A2 = BackpropagationAlgorithm(A1, W2, B3);
@@ -45,8 +46,10 @@ for i = 1:numberOfBatches
         labelVector = LabelToVector(rawTrainingLabels(j), zeros(layer4NeuronCount, 1));
 
         C = ComputeCost(A3, labelVector);
+        
+        S = (2*C)*();
 
-        costs(i, j) = C;
+        costs(j, i) = C;
     end
 end
 

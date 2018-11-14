@@ -46,6 +46,8 @@ for i = 1:numberOfBatches
         labelVector = LabelToVector(rawTrainingLabels(j), zeros(layer4NeuronCount, 1));
 
         C = ComputeCost(A3, labelVector);
+        
+%         S = (2*C)*(transferFuncDerivative);
 
         costs(j, i) = C;
     end
