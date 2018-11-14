@@ -22,20 +22,23 @@ costFunction = zeros(costFunctionSize, 1);
 % Initialize the weight matricies and biases for each layer
 % TODO: Generalize this into a for-loop here using the number of layers and
 % a string representation of the index for the range 1:numberOfLayers
-% "layer" + i + "NeuronCount"
-layer1WeightMatrix = PopulateVectorRandomly(zeros(layer1NeuronCount * layer2NeuronCount, 1));
-layer2Biases = PopulateVectorRandomly(zeros(layer2NeuronCount, 1));
-layer2WeightMatrix = PopulateVectorRandomly(zeros(layer2NeuronCount * layer3NeuronCount, 1));
-layer3Biases = PopulateVectorRandomly(zeros(layer3NeuronCount, 1));
-layer3WeightMatrix = PopulateVectorRandomly(zeros(layer3NeuronCount * layer4NeuronCount, 1));
-layer4Biases = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
+% "layer" + i + "NeuronCount"?
+W1 = PopulateVectorRandomly(zeros(layer1NeuronCount*layer2NeuronCount, 1));
+B2 = PopulateVectorRandomly(zeros(layer2NeuronCount, 1));
+W2 = PopulateVectorRandomly(zeros(layer2NeuronCount*layer3NeuronCount, 1));
+B3 = PopulateVectorRandomly(zeros(layer3NeuronCount, 1));
+W3 = PopulateVectorRandomly(zeros(layer3NeuronCount*layer4NeuronCount, 1));
+B4 = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
 
 % Break training images into columns. Consider making batches here later
 inputRound1 = rawTrainingImages(:, 1);
 
-% Send data to algorithm. Algorithm should return a cost function for the
-% label that was passed in
-BackpropagationAlgorithm(inputRound1, layer1WeightMatrix, layer2Biases, rawTrainingLabels(1))
+% Send data to algorithm. Algorithm should return a set of activate
+A1 = BackpropagationAlgorithm(inputRound1, W1, B2, rawTrainingLabels(1));
+A2 = BackpropagationAlgorithm(A1, W2, B3, rawTrainingLabels(2));
+A3 = BackpropagationAlgorithm(A2, W3, B4, rawTrainingLabels(3));
+
+uh = [];
 
 % Handle the results
 
