@@ -1,4 +1,4 @@
- function [output] = BackpropagationAlgorithm(P, W, B, t)
+ function [output] = BackpropagationAlgorithm(P, W, B)
     % Create an array to hold the output of each neuron in this layer
     neuronActivations = zeros(size(B, 1), 1);
  

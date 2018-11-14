@@ -12,12 +12,12 @@ layer1NeuronCount = size(rawTrainingImages, 1);     % Input layer
 layer2NeuronCount = layer1NeuronCount / 49;         % Hidden layer for computation
 layer3NeuronCount = layer1NeuronCount / 49;         % Hidden layer for computation
 layer4NeuronCount = 10;                             % For the outputs 0-9
-costFunctionSize  = layer4NeuronCount;              % The values of each cost function for each output
+%costFunctionSize  = layer4NeuronCount;              % The values of each cost function for each output
 
 % add the deriatives of the transfer functions here? 
 
 % The values of each cost function for each output: C = (a^L - y)^2
-costFunction = zeros(costFunctionSize, 1);                                       
+%costFunction = zeros(costFunctionSize, 1);                                       
 
 % Initialize the weight matricies and biases for each layer
 % TODO: Generalize this into a for-loop here using the number of layers and
@@ -33,12 +33,23 @@ B4 = PopulateVectorRandomly(zeros(layer4NeuronCount, 1));
 % Break training images into columns. Consider making batches here later
 inputRound1 = rawTrainingImages(:, 1);
 
-% Send data to algorithm. Algorithm should return a set of activate
-A1 = BackpropagationAlgorithm(inputRound1, W1, B2, rawTrainingLabels(1));
-A2 = BackpropagationAlgorithm(A1, W2, B3, rawTrainingLabels(2));
-A3 = BackpropagationAlgorithm(A2, W3, B4, rawTrainingLabels(3));
+% Compute the neuron activations for all three layers
+A1 = BackpropagationAlgorithm(inputRound1, W1, B2);
+A2 = BackpropagationAlgorithm(A1, W2, B3);
+A3 = BackpropagationAlgorithm(A2, W3, B4);
 
-uh = [];
+disp(A3);
+
+% Compute the cost of a single training example
+% Transform the label to be in a vector format. This is 0 based
+labelVector = LabelToVector(rawTrainingLabels(1), zeros(layer4NeuronCount, 1));
+
+disp(labelVector);
+
+C1 = ComputeCostFunction();
+
+% By using the third layer's activations compute the mean squared error, or
+% the cost function: ()
 
 % Handle the results
 
