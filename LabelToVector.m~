@@ -1,8 +1,0 @@
-function [outputArg1] = LabelToVector(target, costFunction)
-    % Something
-    for i = 1:size(costFunction, 1)
-        if i == target
-            costFunction(i) = target;
-            ende
-end
-
