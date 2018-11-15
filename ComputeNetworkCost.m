@@ -1,4 +1,4 @@
-function [output] = ComputeCost(a, t)
+function [output] = ComputeNetworkCost(a, t)
     % Check to make sure the arrays are equal dimensions
     if size(a) ~= size(t)
         disp("Error. The arrays's do not match")

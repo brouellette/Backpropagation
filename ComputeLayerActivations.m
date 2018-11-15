@@ -1,4 +1,4 @@
- function [output] = BackpropagationAlgorithm(P, W, B)
+ function [a] = ComputeLayerActivations(P, W, B)
     % Create an array to hold the output of each neuron in this layer
     neuronActivations = zeros(size(B, 1), 1);
  
@@ -14,19 +14,6 @@
     end
     
     % Return the set of activated neurons
-    output = neuronActivations;
-    
-    % Compute the neuron activations for the third layer
-    
-    
-    % Compute the error: e = (t - a)
-    
-    
-    
-    % Compute the sensitivities through backpropogation
-    
-    
-    % Update the weights and biases
-        
+    a = neuronActivations;       
 end
 
