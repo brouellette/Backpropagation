@@ -66,18 +66,30 @@ for i = 1:numberOfBatches
 end
 
 % Update the network's weight and biases with the averaged batch cost
-averageBatchCost = mean(batchCosts);
+% averageBatchCost = mean(batchCosts);
 
-for layer = 1:layerCount
-   switch layer
-       case 1
+% The function of the Log-sigmoid derivative 
+logSigD = [];
+
+% Need to update the weights and biases for each batch, so LOOP OVER THE
+% BATCHES HERE
+
+ for batchCost = 1:size(batchCosts, 1)
+    for layer = 1:layerCount
+        switch layer
+            case 3
+                for i = 1:size(W1, 2)
+                    for j = 1:size(W1, 1)
+%                         W1(j, i) = (2*batchCost)*(A2());
+                    end
+                end
+            case 2
+                
+            case 1
            
-       case 2
-           
-       case 3
-           
-   end
-end
+        end
+    end
+ end
 
 % Create graphical representations of the inputs and outputs
 

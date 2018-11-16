@@ -26,13 +26,13 @@ B3 = [];
 for layer = 1:layerCount - 1 
     switch layer 
         case 1
-            W1 = RandomlyPopulate(zeros(inputCount*neuronCountL1, 1));
+            W1 = RandomlyPopulate(zeros(inputCount, neuronCountL1));
             B1 = RandomlyPopulate(zeros(neuronCountL1, 1));
         case 2
-            W2 = RandomlyPopulate(zeros(neuronCountL1*neuronCountL2, 1));
+            W2 = RandomlyPopulate(zeros(neuronCountL1, neuronCountL2));
             B2 = RandomlyPopulate(zeros(neuronCountL2, 1));
         case 3
-            W3 = RandomlyPopulate(zeros(neuronCountL2*neuronCountL3, 1));
+            W3 = RandomlyPopulate(zeros(neuronCountL2, neuronCountL3));
             B3 = RandomlyPopulate(zeros(neuronCountL3, 1));
     end
 end
@@ -66,8 +66,30 @@ for i = 1:numberOfBatches
 end
 
 % Update the network's weight and biases with the averaged batch cost
-averageBatchCost = mean(batchCosts);
-UpdateNetwork(averageBatchCost)
+% averageBatchCost = mean(batchCosts);
+
+% The function of the Log-sigmoid derivative 
+logSigD = [];
+
+% Need to update the weights and biases for each batch, so LOOP OVER THE
+% BATCHES HERE
+
+ for batchCost = 1:size(batchCosts, 1)
+    for layer = 1:layerCount
+        switch layer
+            case 3
+                for i = 1:size(W1, 2)
+                    for j = 1:size(W1, 1)
+                        W1(j, i) = (2*batchCost)*(A2());
+                    end
+                end
+            case 2
+                
+            case 1
+           
+        end
+    end
+ end
 
 % Create graphical representations of the inputs and outputs
 
