@@ -53,9 +53,9 @@ for i = 1:numberOfBatches
         P = rawTrainingImages(:, offset);   
 
         % Compute all neuron activations for each of the layers
-        A1, N1 = ComputeLayerActivations(P, W1, B1);
-        A2, N2 = ComputeLayerActivations(A1, W2, B2);
-        A3, N3 = ComputeLayerActivations(A2, W3, B3);
+        [A1, N1] = ComputeLayerActivations(P, W1, B1);
+        [A2, N2] = ComputeLayerActivations(A1, W2, B2);
+        [A3, N3] = ComputeLayerActivations(A2, W3, B3);
 
         labelVector = LabelToVector(rawTrainingLabels(j), zeros(neuronCountL3, 1));
 
@@ -86,7 +86,7 @@ for i = 1:numberOfBatches
     batchCost = zeros(neuronCountL3, 1);
 end
 
-% Testing!
+% Testing
 matchPercentage = zeros(size(rawTestImages, 2), 1);
 for imageIndex = 1:size(rawTestImages, 2)
     P = rawTrainingImages(:, imageIndex);   
@@ -96,15 +96,13 @@ for imageIndex = 1:size(rawTestImages, 2)
     A2 = ComputeLayerActivations(A1, W2, B2);
     A3 = ComputeLayerActivations(A2, W3, B3);
 
-    labelVector = LabelToVector(rawTrainingLabels(j), zeros(neuronCountL3, 1));
-
-    testCost = ComputeNetworkCost(A3, labelVector);
+    [val, idx] = max(A3);
+    label = rawTrainingLabels(imageIndex);
     
-    numberGuess = FindMaxValue(A3);
-    labelActivation = LabelToVector(numberGuess, zeros(neuronCountL3, 1));
-    
-    if isequal(labelVector, labelActivation)
+    if idx == label
        % It's a match
        matchPercentage(imageIndex) = 1;
     end
 end
+
+finalPercentage = mean(matchPercentage);
