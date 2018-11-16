@@ -40,10 +40,12 @@ end
 % Break the training images into batches
 batchSize = (size(rawTrainingImages, 2))/600;              % 100
 numberOfBatches = (size(rawTrainingImages, 2))/batchSize;  % 600
-batchCosts = zeros(numberOfBatches, 1);
+costs = zeros(numberOfBatches, 1);
 
 % For each of the batches, compute the network outputs for the inputs
 for i = 1:numberOfBatches
+    batchCosts = zeros(batchSize, 1);
+    
     for j = 1:batchSize
         % Used to remember pointer location even when the batch set changes
         offset = j+((batchSize*i) - batchSize);   
@@ -61,8 +63,11 @@ for i = 1:numberOfBatches
         layerCost = ComputeNetworkCost(A3, labelVector);
         
         % Store each cost to later take the average of them
-        batchCosts(i) = layerCost;
+        batchCosts(j) = layerCost;
     end
+    
+    costs(i) = mean(batchCosts);
+    batchCosts = [];
 end
 
 % Update the network's weight and biases with the averaged batch cost
@@ -74,22 +79,22 @@ logSigD = [];
 % Need to update the weights and biases for each batch, so LOOP OVER THE
 % BATCHES HERE
 
- for batchCost = 1:size(batchCosts, 1)
-    for layer = 1:layerCount
-        switch layer
-            case 3
-                for i = 1:size(W1, 2)
-                    for j = 1:size(W1, 1)
+%  for batchCost = 1:size(costs, 1)
+%     for layer = 1:layerCount
+%         switch layer
+%             case 3
+%                 for i = 1:size(W1, 2)
+%                     for j = 1:size(W1, 1)
 %                         W1(j, i) = (2*batchCost)*(A2());
-                    end
-                end
-            case 2
-                
-            case 1
-           
-        end
-    end
- end
+%                     end
+%                 end
+%             case 2
+%                 
+%             case 1
+%            
+%         end
+%     end
+%  end
 
 % Create graphical representations of the inputs and outputs
 

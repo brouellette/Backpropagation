@@ -40,10 +40,12 @@ end
 % Break the training images into batches
 batchSize = (size(rawTrainingImages, 2))/600;              % 100
 numberOfBatches = (size(rawTrainingImages, 2))/batchSize;  % 600
-batchCosts = zeros(numberOfBatches, 1);
+costs = zeros(numberOfBatches, 1);
 
 % For each of the batches, compute the network outputs for the inputs
 for i = 1:numberOfBatches
+    batchCosts = [];
+    
     for j = 1:batchSize
         % Used to remember pointer location even when the batch set changes
         offset = j+((batchSize*i) - batchSize);   
@@ -74,7 +76,7 @@ logSigD = [];
 % Need to update the weights and biases for each batch, so LOOP OVER THE
 % BATCHES HERE
 
- for batchCost = 1:size(batchCosts, 1)
+ for batchCost = 1:size(costs, 1)
     for layer = 1:layerCount
         switch layer
             case 3
