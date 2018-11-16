@@ -75,13 +75,13 @@ for i = 1:numberOfBatches
     S1 = diag(dlogsig(N1, A1)) * (W2 * S2);
     
     % Update the weights and biases for each layer 
-    W1 = W1 - (1 * (S1*P')');
-    W2 = W2 - (1 * (S2*A1')');
-    W3 = W3 - (1 * (S3*A2')');
+    W1 = W1 - (0.5 * (S1*P')');
+    W2 = W2 - (0.5 * (S2*A1')');
+    W3 = W3 - (0.5 * (S3*A2')');
     
-    B1 = B1 - (1 * S1);
-    B2 = B2 - (1 * S2);
-    B3 = B3 - (1 * S3);
+    B1 = B1 - (0.5 * S1);
+    B2 = B2 - (0.5 * S2);
+    B3 = B3 - (0.5 * S3);
     
     batchCost = zeros(neuronCountL3, 1);
 end
