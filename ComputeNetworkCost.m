@@ -7,8 +7,8 @@ function [output] = ComputeNetworkCost(a, t)
 
     % Get the mean squared error of the actual output, and the target
     % output
-    output = t - a;
-%     a = a.^2;
+    a = a - t;
+    output = a.^2;
 %     output = sum(a);
 end
 

@@ -1,0 +1,4 @@
+function [maxValue] = FindMaxValue(a, inputArg2)
+    
+end
+

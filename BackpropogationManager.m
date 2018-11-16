@@ -43,7 +43,7 @@ numberOfBatches = (size(rawTrainingImages, 2))/batchSize;  % 600
 
 % For each of the batches, compute the network outputs for the inputs
 for i = 1:numberOfBatches
-    batchCosts = zeros(batchSize, 1);
+    batchCost = zeros(neuronCountL3, 1);
     
     for j = 1:batchSize
         % Used to remember pointer location even when the batch set changes
@@ -62,37 +62,49 @@ for i = 1:numberOfBatches
         layerCost = ComputeNetworkCost(A3, labelVector);
         
         % Store each cost to later take the average of them
-        batchCosts(j) = layerCost;
+        batchCost = batchCost + layerCost;
     end
     
-    cost = mean(batchCosts);
-    
+    % Get the average batch
+    batchCost = batchCost / batchSize;
+        
     % Update weights and biases
     % Add in N values 
-    S3 = -2 * diag(dlogsig(N3, A3) * cost);
+    S3 = 2 * diag(dlogsig(N3, A3) * batchCost');
     S2 = diag(dlogsig(N2, A2)) * (W3 * S3);
     S1 = diag(dlogsig(N1, A1)) * (W2 * S2);
     
-    % update weights and biases for each layer 
-    W1 = W1 - (0.5 * (S1*P));
-    W2 = W2 - (0.5 * (S2*A1));
-    W3 = W3 - (0.5 * (S3*A2));
+    % Update the weights and biases for each layer 
+    W1 = W1 - (1 * (S1*P')');
+    W2 = W2 - (1 * (S2*A1')');
+    W3 = W3 - (1 * (S3*A2')');
     
-    B1 = B1 - (0.5 * S1);
-    B2 = B2 - (0.5 * S2);
-    B3 = B3 - (0.5 * S3);
+    B1 = B1 - (1 * S1);
+    B2 = B2 - (1 * S2);
+    B3 = B3 - (1 * S3);
     
-    batchCosts = [];
+    batchCost = zeros(neuronCountL3, 1);
 end
 
-% Let's do some testing!
-P = rawTrainingImages(:, 1);   
+% Testing!
+matchPercentage = zeros(size(rawTestImages, 2), 1);
+for imageIndex = 1:size(rawTestImages, 2)
+    P = rawTrainingImages(:, imageIndex);   
 
-% Compute all neuron activations for each of the layers
-A1, N1 = ComputeLayerActivations(P, W1, B1);
-A2, N2 = ComputeLayerActivations(A1, W2, B2);
-A3, N3 = ComputeLayerActivations(A2, W3, B3);
+    % Compute all neuron activations for each of the layers
+    A1 = ComputeLayerActivations(P, W1, B1);
+    A2 = ComputeLayerActivations(A1, W2, B2);
+    A3 = ComputeLayerActivations(A2, W3, B3);
 
-labelVector = LabelToVector(rawTrainingLabels(j), zeros(neuronCountL3, 1));
+    labelVector = LabelToVector(rawTrainingLabels(j), zeros(neuronCountL3, 1));
 
-layerCost = ComputeNetworkCost(A3, labelVector);
+    testCost = ComputeNetworkCost(A3, labelVector);
+    
+    numberGuess = FindMaxValue(A3);
+    labelActivation = LabelToVector(numberGuess, zeros(neuronCountL3, 1));
+    
+    if isequal(labelVector, labelActivation)
+       % It's a match
+       matchPercentage(imageIndex) = 1;
+    end
+end
